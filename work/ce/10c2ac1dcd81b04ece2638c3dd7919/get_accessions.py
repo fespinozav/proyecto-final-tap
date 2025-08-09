@@ -1,1 +1,0 @@
-/Users/felipeespinoza/Documents/GitHub/proyecto-final-tap/scripts/get_accessions.py

@@ -12,7 +12,7 @@ from IPython.display import display
 species = 'Mycobacterium intracellulare'
 features = pd.read_csv('Supplememtary_Table_1.csv', dtype=str, low_memory=False)
 features.columns = features.columns.str.strip()
-folder_path = os.path.join(os.getcwd(), 'genomas', species)
+folder_path = os.path.join(os.getcwd(), 'genomes', species)
 
 # Filtrar solo archivos que terminen en '.fna' y NO en '.fna.gz'
 fna_files = [f for f in Path(folder_path).glob("*.fna") if not f.name.endswith(".fna.gz")]
