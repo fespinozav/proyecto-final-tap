@@ -1,0 +1,2 @@
+2025-08-09 15:46:25	-	lethal_shockley	-	c4ec4b00d375b8b289b26ac75451c3e9	d514f649-b236-490c-9c72-d7839c55386a	nextflow run . --species 'Klebsiella aerogenes'
+2025-08-09 15:52:11	-	reverent_jepsen	-	651aca81be7d8fa45d3d6bb8bde0bf4d	c8e577d6-66b3-4a06-9f91-3eae84ccbd87	nextflow run . --species 'Klebsiella aerogenes'
