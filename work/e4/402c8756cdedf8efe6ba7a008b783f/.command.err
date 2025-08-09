@@ -1,0 +1,2 @@
+/Users/felipeespinoza/Documents/GitHub/proyecto-final-tap/scripts/get_accessions.py:8: DtypeWarning: Columns (27,29,35,36,37,38) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv(csv_path)

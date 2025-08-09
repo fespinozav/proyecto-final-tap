@@ -7,36 +7,42 @@ Proyecto final para Tecnicas de la programación avanzada
 #### Especies de cada estudiante:
 
 Lenin Ruiz:
-- s__Enterobacter roggenkampii
-- s__Aeromonas veronii 
-- s__Aeromonas caviae 
-- s__Limosilactobacillus fermentum
+- Enterobacter roggenkampii
+- Aeromonas veronii 
+- Aeromonas caviae 
+- Limosilactobacillus fermentum
 
 Juan Cantos 
 
-- s__Lacticaseibacillus rhamnosus
-- s__Burkholderia glumae
-- s__Rickettsia rickettsii
-- s__Staphylococcus pseudintermedius
+- Lacticaseibacillus rhamnosus
+- Burkholderia glumae
+- Rickettsia rickettsii
+- Staphylococcus pseudintermedius
 
 Felipe Espinoza
 
-- s__Mycobacterium intracellulare
-- s__Klebsiella aerogenes
-- s__Burkholderia multivorans
-- s__Clostridium_F botulinum
+- Mycobacterium intracellulare
+- Klebsiella aerogenes
+- Burkholderia multivorans
+- Clostridium_F botulinum
 
 Osvaldo Delgado
 
-- s__Bifidobacterium longum             
-- s__Escherichia fergusonii             
-- s__Bacillus_A cereus                  
-- s__Xylella fastidiosa
+- Bifidobacterium longum             
+- Escherichia fergusonii             
+- Bacillus_A cereus                  
+- Xylella fastidiosa
 
 
 
+# HOW to RUN
+Para descarga los documentos a tu local filtrados por especie.
 
 ```bash
-./scripts/download_by_species.sh "s__Streptococcus suis" ./genomas/Streptococcus_suis
+// Pasando el usuario como 3er argumento:
+scripts/download_by_species.sh "s__Streptococcus suis" otro_usuario
+
+// O con variable de entorno:
+REMOTE_USER=otro_usuario scripts/download_by_species.sh "Streptococcus suis" genomas/Streptococcus_suis
 
 ```
