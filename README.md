@@ -88,3 +88,11 @@ Al ejecutarlo, se imprimirá un mensaje indicando la creación de archivos con �
 
 - Archivo `samples_{species_underscore}.tsv` creado con éxito, encuéntralo en la carpeta `outputs`.
 - Archivo `labels_Klebsiella_aerogenes.tsv` creado con éxito con 2450 filas, encuéntralo en la carpeta `outputs`.
+
+Prueba en limpio Nextflow
+
+```bash
+nextflow clean -f || true
+rm -rf work .nextflow
+nextflow run . --species "Klebsiella aerogenes"
+```

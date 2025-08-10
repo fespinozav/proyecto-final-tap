@@ -1,12 +1,19 @@
 import pandas as pd
 import os
-import numpy as np
-import matplotlib.pyplot as plt
 from Bio import SeqIO
 import re
 from pathlib import Path
 import argparse
-from IPython.display import display
+
+# Detecta si corre dentro de Nextflow
+IN_NXF = "NXF_TASK_WORKDIR" in os.environ
+
+# Raíz del proyecto (…/proyecto-final-tap)
+project_dir = Path(__file__).resolve().parents[1]
+
+# Dónde escribir salidas
+output_dir = Path(".") if IN_NXF else Path("outputs")
+output_dir.mkdir(exist_ok=True)
 
 
  # === CLI args: species name (accepts forms like "s__Genus_species", "Genus species", or "Genus_species") ===
@@ -63,12 +70,23 @@ if species_dir is None:
 
 # Use resolved directory name as the species label for downstream paths
 species = species_dir.name
-features = pd.read_csv('Supplememtary_Table_1.csv', dtype=str, low_memory=False)
+project_dir = Path(__file__).resolve().parents[1]  # .../proyecto-final-tap/
+csv_path = project_dir / 'Supplememtary_Table_1.csv' if IN_NXF else Path('Supplememtary_Table_1.csv')
+genomes_dir = (project_dir / 'genomes') if IN_NXF else (Path(os.getcwd()) / 'genomes')
+features = pd.read_csv(csv_path, dtype=str, low_memory=False)
 features.columns = features.columns.str.strip()
-folder_path = os.path.join(os.getcwd(), 'genomes', species)
+folder_path = str(genomes_dir / species)
 
 # Filtrar solo archivos que terminen en '.fna' y NO en '.fna.gz'
 fna_files = [f for f in Path(folder_path).glob("*.fna") if not f.name.endswith(".fna.gz")]
+
+print(f"[PY] IN_NXF={IN_NXF}")
+print(f"[PY] CWD={Path.cwd()}")
+print(f"[PY] project_dir={project_dir}")
+print(f"[PY] genomes_dir={genomes_dir} exists={genomes_dir.exists()}")
+print(f"[PY] csv_path={csv_path} exists={csv_path.exists()}")
+print(f"[PY] output_dir={output_dir.resolve()}")
+
 
 # Lista para guardar resultados
 datos = []
@@ -104,8 +122,9 @@ for file in fna_files:
 df = pd.DataFrame(datos)
 
 # Guardar como TSV
-df.to_csv(f"outputs/samples_{species_underscore}.tsv", sep="\t", index=False)
-print("Archivo 'samples_{species_underscore}.tsv' creado con éxito, encuéntralo en la carpeta outputs.")
+
+df.to_csv(output_dir / f"samples_{species_underscore}.tsv", sep="\t", index=False)
+print(f"Archivo 'samples_{species_underscore}.tsv' creado con éxito, encuéntralo en la carpeta outputs.")
 
 labels_data = []
 
@@ -156,5 +175,5 @@ for file in fna_files:
 
 if labels_data:
     labels_df = pd.concat(labels_data, ignore_index=True)
-    labels_df.to_csv(f"outputs/labels_{species_underscore}.tsv", sep="\t", index=False)
+    labels_df.to_csv(output_dir /f"labels_{species_underscore}.tsv", sep="\t", index=False)
     print(f"Archivo 'labels_{species_underscore}.tsv' creado con éxito con {len(labels_df)} filas, encuéntralo en la carpeta outputs.")
