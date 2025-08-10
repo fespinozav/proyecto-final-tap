@@ -1,26 +1,22 @@
 import pandas as pd
-import os
+import os, re, gzip, argparse
 from Bio import SeqIO
-import re
 from pathlib import Path
-import argparse
 
-# Detecta si corre dentro de Nextflow
+
+# Detect if running in Nextflow (NXF) environment
 IN_NXF = "NXF_TASK_WORKDIR" in os.environ
 
 # Raíz del proyecto (…/proyecto-final-tap)
 project_dir = Path(__file__).resolve().parents[1]
 
-# Dónde escribir salidas
-output_dir = Path(".") if IN_NXF else Path("outputs")
-output_dir.mkdir(exist_ok=True)
-
-
  # === CLI args: species name (accepts forms like "s__Genus_species", "Genus species", or "Genus_species") ===
 parser = argparse.ArgumentParser(description="Parse metadata for a given species folder under genomes/")
 parser.add_argument("--species", dest="species", required=False, help="Species name. Accepts 's__Genus_species', 'Genus species', or 'Genus_species'.")
 parser.add_argument("species_pos", nargs='?', default=None, help="Positional species name (optional)")
+parser.add_argument("--outdir", dest="outdir", required=False, help="Output directory (optional). Defaults to '.' in Nextflow, or 'outputs' when run manually.")
 args = parser.parse_args()
+
 
 # Choose CLI source (positional has lower priority than --species)
 raw_species = args.species if args.species else args.species_pos
@@ -28,6 +24,17 @@ if not raw_species:
     raise SystemExit("[ERROR] Debe proporcionar la especie via '--species " +
                      "\"Genus species\"' o como argumento posicional. Ej.:\n" +
                      "    python scripts/parse_metadata.py --species 'Mycobacterium intracellulare'")
+
+# Dónde escribir salidas (preferencia: --outdir > $OUTDIR > ('.' en Nextflow) o 'outputs' manual)
+outdir_cli = getattr(args, 'outdir', None)
+env_outdir = os.getenv("OUTDIR")
+if outdir_cli:
+    output_dir = Path(outdir_cli)
+elif env_outdir:
+    output_dir = Path(env_outdir)
+else:
+    output_dir = Path(".") if IN_NXF else Path("outputs")
+output_dir.mkdir(parents=True, exist_ok=True)
 
 # Normalize: strip s__ prefix, accept '_' or space, collapse whitespace
 def normalize_species(s: str) -> str:
@@ -39,14 +46,17 @@ def normalize_species(s: str) -> str:
     return s.strip()
 
 species_clean = normalize_species(raw_species)
-# Build common variants for matching folder names
 species_space = species_clean  # e.g., 'Mycobacterium intracellulare'
 species_underscore = species_clean.replace(' ', '_')  # e.g., 'Mycobacterium_intracellulare'
 
 # Resolve folder under genomes/ preferring underscore variant, then space, case-insensitive
 genomes_dir = Path(os.getcwd()) / 'genomes'
 if not genomes_dir.exists():
-    raise SystemExit(f"[ERROR] No existe el directorio base de genomas: {genomes_dir}")
+    alt = Path(os.getcwd()) / 'genomas'
+    if alt.exists():
+        genomes_dir = alt
+    else:
+        raise SystemExit(f"[ERROR] No existe el directorio base de genomas: {genomes_dir} (intenté también {alt})")
 
 def find_species_dir(base: Path, candidates: list[str]) -> Path | None:
     cand_lower = [c.lower() for c in candidates]
@@ -73,6 +83,16 @@ species = species_dir.name
 project_dir = Path(__file__).resolve().parents[1]  # .../proyecto-final-tap/
 csv_path = project_dir / 'Supplememtary_Table_1.csv' if IN_NXF else Path('Supplememtary_Table_1.csv')
 genomes_dir = (project_dir / 'genomes') if IN_NXF else (Path(os.getcwd()) / 'genomes')
+
+if not csv_path.exists():
+    alt_csv = (Path('Supplememtary_Table_1.csv') if IN_NXF else (project_dir / 'Supplememtary_Table_1.csv'))
+    if alt_csv.exists():
+        csv_path = alt_csv
+if not genomes_dir.exists():
+    alt2 = (project_dir / 'genomas') if IN_NXF else (Path(os.getcwd()) / 'genomas')
+    if alt2.exists():
+        genomes_dir = alt2
+
 features = pd.read_csv(csv_path, dtype=str, low_memory=False)
 features.columns = features.columns.str.strip()
 folder_path = str(genomes_dir / species)
@@ -124,7 +144,7 @@ df = pd.DataFrame(datos)
 # Guardar como TSV
 
 df.to_csv(output_dir / f"samples_{species_underscore}.tsv", sep="\t", index=False)
-print(f"Archivo 'samples_{species_underscore}.tsv' creado con éxito, encuéntralo en la carpeta outputs.")
+print(f"Archivo 'samples_{species_underscore}.tsv' creado con éxito en {output_dir}.")
 
 labels_data = []
 
@@ -175,5 +195,17 @@ for file in fna_files:
 
 if labels_data:
     labels_df = pd.concat(labels_data, ignore_index=True)
-    labels_df.to_csv(output_dir /f"labels_{species_underscore}.tsv", sep="\t", index=False)
-    print(f"Archivo 'labels_{species_underscore}.tsv' creado con éxito con {len(labels_df)} filas, encuéntralo en la carpeta outputs.")
+    labels_df.to_csv(output_dir / f"labels_{species_underscore}.tsv", sep="\t", index=False)
+    print(f"Archivo 'labels_{species_underscore}.tsv' creado con éxito con {len(labels_df)} filas en {output_dir}.")
+else:
+    # Generar TSV vacío con cabeceras coherentes para robustez en NF/manual
+    labels_df = pd.DataFrame(columns=[
+        "filename",
+        "accession",
+        "checkm_marker_lineage",
+        "ssu_silva_blast_subject_id",
+        "ssu_silva_taxonomy",
+        "species"
+    ])
+    labels_df.to_csv(output_dir / f"labels_{species_underscore}.tsv", sep="\t", index=False)
+    print(f"Archivo 'labels_{species_underscore}.tsv' creado vacío (0 filas) en {output_dir}.")

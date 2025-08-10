@@ -1,2 +1,0 @@
-task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
-1	6b/3246ad	22582	PARSE_METADATA (Mycobacterium intracellulare)	ABORTED	-	2025-08-09 21:06:50.814	-	-	-	-	-	-	-
