@@ -9,34 +9,6 @@ Incluye dos formas de uso:
 - **Modo scripts**: `scripts/download_by_species.sh` y `scripts/parse_metadata.py`.
 - **Modo pipeline** con **Nextflow (DSL2)**: proceso `PARSE_METADATA` que orquesta `parse_metadata.sh` → `parse_metadata.py` y publica **TSVs**.
 
-## Especies por estudiante
-
-A continuación, se listan las especies asignadas a cada estudiante para la descarga y análisis:
-
-- **Lenin Ruiz:**
-  - Enterobacter roggenkampii
-  - Aeromonas veronii 
-  - Aeromonas caviae 
-  - Limosilactobacillus fermentum
-
-- **Juan Cantos:**
-  - Lacticaseibacillus rhamnosus
-  - Burkholderia glumae
-  - Rickettsia rickettsii
-  - Staphylococcus pseudintermedius
-
-- **Felipe Espinoza:**
-  - Mycobacterium intracellulare
-  - Klebsiella aerogenes
-  - Burkholderia multivorans
-  - Clostridium_F botulinum
-
-- **Osvaldo Delgado:**
-  - Bifidobacterium longum             
-  - Escherichia fergusonii             
-  - Bacillus_A cereus                  
-  - Xylella fastidiosa
-
 ---
 
 ## Requisitos
