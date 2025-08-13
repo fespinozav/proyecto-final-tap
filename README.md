@@ -15,12 +15,23 @@ Incluye dos formas de uso:
 
 - **Nextflow** ≥ 24.10.1
 - **Bash** (macOS / Linux)
+- **Conda 24.11.3**
 - **Python 3.8+** con:
   - `pandas`
   - `biopython`
+  - `blast`
 - Acceso a la carpeta `genomes/` con subcarpetas por especie (p.ej. `Mycobacterium_intracellulare/`).
 
 > En macOS sin contenedor verás `WARN: Task runtime metrics are not reported…` (es esperado).
+
+Instalación de ambiente conda con todas las dependencias:
+- Ingresar a la carpeta del repositorio
+- Asegurarse de que conda este instalado y corriendo
+- Instalar y activar el ambiente conda ejecutando los siguientes comandos:
+```bash
+conda env create -f environment.yaml
+conda activate TAP
+```
 
 Instalación rápida de dependencias Python (opcional):
 
@@ -79,6 +90,71 @@ El pipeline expone un **único proceso**:
 | `--outdir`         | carpeta  | No        | Carpeta donde publicar TSVs (`publishDir`)                |
 
 \* Usa **uno u otro** (`--species` **o** `--species_list`).
+
+### `MAKE_DB`
+- **Input**:
+       - canal de archivos `samples_<Especie>.tsv`
+       - canal de archivos en carpeta genomes `<Especies>/*.fna`
+- **Ejecución**:
+    1. `make_db.sh` 
+       - Lee entradas en archivos samples_<Especies>.tsv
+       - localiza FASTA (`*.fna`) bajo `genomes/<Especie>/`
+       - concatena los FASTA en un solo archivo ref_db.fsa
+       - utiliza el comando `makeblastdb` de la librearía `blast` y genera:
+         - `ref_db.fsa*`
+- **Outputs**:
+    - `emit: `database` → `ref_db.fsa*`
+    - **publishDir**: `params.outdir` (por defecto `${projectDir}/results` salvo que lo cambies en `nextflow.config`).
+
+### `RUN_BLAST`
+- **Input**:
+       - canal de archivos en carpeta genomes `<Especies>/*.fna`, solo las especificadas en canal de especies
+       - canal de archivos database `ref_db.fsa*`
+- **Ejecución**:
+    1. `run_blast.sh` 
+       - recibe un archivo FASTA para realizar alineamiento
+       - utiliza comando `blastn` de librería `blast` para alineamientos
+       - genera:
+	 - archivo .xml con formato blast con resultados
+       - En caso de ya existir un archivo con el mismo nombre (para evitar ejecutar el alineamiento nuevamente), se genera un archivo vacío `temp.xml`.
+- **Outputs**:
+    - `emit: `results_xml` → `*.xml`
+    - **publishDir**: `params.blast` (por defecto `${params.outdir/blast_results` salvo que lo cambies en `nextflow.config`).
+
+### `EXTRACT_HSPS`
+- **Input**:
+       - canal de archivos resultados blast `*.xml`
+- **Ejecución**:
+    1. `parse_hsps.py` 
+       - recibe un archivo de resultados de blast .xml
+       - utiliza `Blast.parse` de la librería `biopython` para lectura de los archivos
+       - extrae información necesario para cálculos posteriores en arreglos `numpy`
+       - genera:
+	 - `labels.npy` archivo con los identificadores de cada secuencia para cada alineamiento
+	 - `hsps.npy` archivos con información de alineamientos
+       - En caso de ya existir un archivo con el mismo nombre (para evitar ejecutar el la extracción nuevamente), se genera un archivo vacío `temp.npy`.
+- **Outputs**:
+    - `emit: 
+       - `npy_results` → `*.npy`
+    - **publishDir**: `params.hsps` (por defecto `${params.outdir}/hsps/` salvo que lo cambies en `nextflow.config`).
+
+### `CALC_DISTANCES`
+- **Input**:
+       - canal de archivos resultados de extracción de hsps `*.npy`
+- **Ejecución**:
+    1. `calc_distances.py` 
+       - recibe un archivos de numpy `labels.npy` y `hsps.npy` y cadena con números del 0 a 9
+       - Los números especifican que fórmulas de distancias a utilizar e.g. "0,2,6" -> Calcular distancias 
+       - Las fómulas de distancias se especifican con el parámetro `dis_formula` en `nextflow.config`
+       - Extra información de `hsps.npy` para realizar los cálculos y la información de `labels.npy` para buscar alinemiento inverso, es decir, seq1-v-seq2, el inverso es seq2-v-seq1. 
+       - genera:
+         - archivo distances_dN.npy, donde N corresponde al número de la fórmula de distancia utilizado.  
+- **Outputs**:
+    - `emit: 
+       - `distance_npy` → `*.npy`
+    - **publishDir**: `params.distances` (por defecto `${params.outdir}/distances/` salvo que lo cambies en `nextflow.config`).
+
+
 
 ---
 
@@ -261,8 +337,7 @@ nextflow run . --species "Klebsiella aerogenes" --outdir outputs
 ---
 
 ### Changelog (2025-08-09)
-- Integración **Nextflow (DSL2)** del proceso `PARSE_METADATA`.
-- Escritorio robusto de salidas: `OUTDIR="$PWD"` → TSV siempre en el workdir del task.
-- Publicación con `publishDir (params.outdir)` y soporte de `--outdir`.
-- Limpieza con `scripts/clean.sh`.
-- Rutas de reportes en `reports/` cuando se usan `-with-*`.
+- Integración **Nextflow (DSL2)** de los procesos `MAKE_DB`, `RUN_BLAST`,`EXTRACT_HSPS` y `CALC_DISTANCES`.
+- Carpeta de archivos para nuevos procesos en scripts/DistExtract.
+- Modificación de archivo main.df para implementación de pipeline.
+- Parámetros agregados en archivo `nextflow.config` para nuevos procesos.

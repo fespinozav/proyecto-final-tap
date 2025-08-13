@@ -5,7 +5,7 @@ outdir=$2
 db=`echo $database_file | cut -d " " -f 1`
 base=`basename -s .fna $sample_file`
 
-#Make a blast for all the FASTA files in a directory
+#Make a blast for a single FASTA file
 #Ouput.xml results to xml directory
 name=`basename -s .fna $sample_file`
     echo "$outdir/$name.xml"

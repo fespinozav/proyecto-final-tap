@@ -39,13 +39,12 @@ workflow {
   main:
     samples_out = PARSE_METADATA( ch_species )
     database=MAKE_DB(samples_out.samples.collect(),params.genomes)
-    // file_channel = Channel.fromPath("${params.genomes}/SPECIES/*.fna")
     file_channel = ch_species.map { species ->
-    file("${params.genomes}/${species}/*.fna")
+    def dir_name = species.replace(' ', '_')
+    files("${params.genomes}/${dir_name}/*.fna")
     }
-
-    blast_results=RUN_BLAST(file_channel,database)
-    // blast_results = Channel.fromPath("${params.blast}/*.xml") //To run on the files, not on the output of channe
+    blast_results=RUN_BLAST(ch_genomes,database)
+    // blast_results = Channel.fromPath("${params.blast}/*.xml") //To run on the files, not on the output of channel
     npy_results=EXTRACT_HSPS(blast_results).view()
     CALC_DISTANCES(npy_results)
 }
