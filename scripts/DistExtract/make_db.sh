@@ -6,7 +6,6 @@ genomes_dir=$2
 
 
 for file in $samples_file;do
-    # echo $file
     dir_base=`echo $file | cut -f 2,3 -d "_" | cut -f 1 -d "."`
     {
         read   

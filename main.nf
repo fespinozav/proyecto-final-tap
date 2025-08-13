@@ -39,7 +39,10 @@ workflow {
   main:
     samples_out = PARSE_METADATA( ch_species )
     database=MAKE_DB(samples_out.samples.collect(),params.genomes)
-    file_channel = Channel.fromPath("${params.genomes}/*/*.fna")
+    // file_channel = Channel.fromPath("${params.genomes}/SPECIES/*.fna")
+    file_channel = ch_species.map { species ->
+    file("${params.genomes}/${species}/*.fna")
+    }
 
     blast_results=RUN_BLAST(file_channel,database)
     // blast_results = Channel.fromPath("${params.blast}/*.xml") //To run on the files, not on the output of channe

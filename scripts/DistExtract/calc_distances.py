@@ -40,16 +40,6 @@ labels,hsp=unite_npy(dir)
 print(labels.shape)
 
 
-
-
-# TEST
-# ---
-# print(labels)
-# print(labels.shape)
-# print(np.where(labels == "NZ_AP017581-v-NZ_AP017578"))
-# print(labels[np.where(labels == "NZ_AP017581-v-NZ_AP017578")[0].item()])
-# ---
-
 # Formulae
 # ------------------------------------------------------------
 # Group A
@@ -104,13 +94,6 @@ def calc_distance_back(labels,hsp):
 
         xy=value
         # Get corresponding reverse alignment (YX)
-        # if np.where(labels == label)[0].size != 0:
-        #     pos=np.where(labels == label)[0].item()
-        #     # print(f"{pos} {item.item()}")
-        #     yx=hsp[pos]
-        # else:
-        #     print(f"No {item.item()} found")
-
         yx=get_reverse(labels,label,hsp)
 
 
@@ -138,19 +121,6 @@ def get_reverse(labels,label,hsp):
             
 
 def calc_distance(labels,hsp,sel):
-    # temps_dict={
-    # "d0":temp0=[],
-    # "d1":temp1=[],
-    # "d2":temp2=[],
-    # "d3":temp3=[],
-    # "d4":temp4=[],
-    # "d5":temp5=[],
-    # "d6":temp6=[],
-    # "d7":temp7=[],
-    # "d8":temp8=[],
-    # "d9":temp9=[]
-    # }
-
     dis_list=[dis0,dis1,dis2,dis3,dis4,dis5,dis6,dis7,dis8,dis9]
 
     temps={
