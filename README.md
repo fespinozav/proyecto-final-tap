@@ -308,10 +308,10 @@ Lo que borra:
 
 ## Especies por estudiante
 
-- **Lenin Ruiz:** Enterobacter roggenkampii, Aeromonas veronii, Aeromonas caviae, Limosilactobacillus fermentum
-- **Juan Cantos:** Lacticaseibacillus rhamnosus, Burkholderia glumae, Rickettsia rickettsii, Staphylococcus pseudintermedius
-- **Felipe Espinoza:** Mycobacterium intracellulare, Klebsiella aerogenes, Burkholderia multivorans, Clostridium_F botulinum
-- **Osvaldo Delgado:** Bifidobacterium longum, Escherichia fergusonii, Bacillus_A cereus, Xylella fastidiosa
+- **Lenin Ruiz:** s__Enterobacter hoffmannii, s__Aeromonas veronii, s__Aeromonas caviae, s__Limosilactobacillus fermentum
+- **Juan Cantos:** s__Lacticaseibacillus rhamnosus, s__Burkholderia glumae, s__Rickettsia rickettsii, s__Staphylococcus pseudintermedius
+- **Felipe Espinoza:** s__Mycobacterium intracellulare, s__Enterobacter hormaechei_B, s__Burkholderia multivorans, s__Clostridium_F botulinum
+- **Osvaldo Delgado:** s__Bifidobacterium longum, s__Escherichia coli, s__Bacillus_A cereus, s__Xylella fastidiosa
 
 ---
 
