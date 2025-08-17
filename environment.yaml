@@ -91,4 +91,3 @@ dependencies:
   - pip:
       - biopython==1.85
       - numpy==2.3.2
-prefix: /home/jseba/miniconda3/envs/TAP
