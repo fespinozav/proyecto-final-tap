@@ -64,15 +64,20 @@ if __name__ == '__main__':
     # selección
     path_supplementary_table = '../Supplememtary_Table_1.csv'
     df = pd.read_csv(path_supplementary_table, low_memory=False)
-    lista_especies = seleccionar_especies(path_supplementary_table)
+    lista_especies = ['s__Enterobacter hoffmannii', 's__Aeromonas veronii', 
+                      's__Aeromonas caviae', 's__Limosilactobacillus fermentum', 
+                      's__Lacticaseibacillus rhamnosus', 's__Burkholderia glumae', 
+                      's__Rickettsia rickettsii', 's__Staphylococcus pseudintermedius', 
+                      's__Mycobacterium intracellulare', 's__Enterobacter hormaechei_B', 
+                      's__Burkholderia multivorans', 's__Clostridium_F botulinum', 
+                      's__Bifidobacterium longum', 's__Escherichia coli', 
+                      's__Bacillus_A cereus', 's__Xylella fastidiosa'] 
     
     # filtrado general
-    lista_especies = [lista_especies[0]] # todas las pruebas se harán con esta especie
-    print('Se trabajará solo con la especie:', lista_especies[0])
     df = filtrar_especies(df, lista_especies)
     
     # metadatos
-    fasta_input = '../0. Proyecto/Data_forTAP/*.fna'
+    fasta_input = '/data/T-cnicas-Avanzadas-de-Programaci-n/0. Proyecto/Data_forTAP/*.fna'
     meta = metadatos(fasta_input, df)
 
     # secuencias
