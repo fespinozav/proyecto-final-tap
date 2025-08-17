@@ -65,7 +65,7 @@ outdir=os.listdir(sys.argv[2])
 if dir.endswith(".xml") and f"hsps_{dir.replace(".xml",".npy")}" not in outdir and dir != "temp.xml":
     #Single file
     if os.path.isfile(os.path.join(sys.argv[2],f"hsps_{dir.replace(".xml",".npy")}")):
-        print("file exists peko")
+        print("file exists")
     arr=single_results_arr(dir)
     np.save(f"labels_{dir.replace(".xml",".npy")}",arr[:,:1])
     np.save(f"hsps_{dir.replace(".xml",".npy")}",arr[:,1:])

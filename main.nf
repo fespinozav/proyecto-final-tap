@@ -45,6 +45,6 @@ workflow {
     }.flatten()
     blast_results=RUN_BLAST(file_channel,database)
     // blast_results = Channel.fromPath("${params.blast}/*.xml") //To run on the files, not on the output of channel
-    npy_results=EXTRACT_HSPS(blast_results).view()
-    CALC_DISTANCES(npy_results)
+    npy_results=EXTRACT_HSPS(blast_results)
+    CALC_DISTANCES(npy_results.collect()).view()
 }

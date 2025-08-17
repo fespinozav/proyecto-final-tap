@@ -8,7 +8,6 @@ process EXTRACT_HSPS {
         // stdout
         path "*.npy", emit: npy_results
         
-  
     script:
     """
     mkdir -p ${params.hsps}
@@ -23,15 +22,13 @@ process CALC_DISTANCES {
     input:
         path npy_results
 
-        
     output:
         // stdout
         path "*.npy", emit: distances_npy
         
-  
     script:
     """
+    python3 "${projectDir}/scripts/DistExtract/calc_distances.py" "${npy_results}" ${params.dis_formula}
 
-    python3 "${projectDir}/scripts/DistExtract/calc_distances.py" ${params.hsps} ${params.dis_formula}
     """
 }
