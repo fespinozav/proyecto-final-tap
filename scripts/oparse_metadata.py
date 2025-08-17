@@ -75,11 +75,11 @@ if __name__ == '__main__':
     
     # filtrado general
     df = filtrar_especies(df, lista_especies)
-    
+
     # metadatos
     fasta_input = '/data/T-cnicas-Avanzadas-de-Programaci-n/0. Proyecto/Data_forTAP/*.fna'
     meta = metadatos(fasta_input, df)
-
+#%%
     # secuencias
     secuencias = secuencias(meta[['fichero']])
 

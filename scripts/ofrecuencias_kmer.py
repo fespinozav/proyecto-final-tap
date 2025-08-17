@@ -49,14 +49,14 @@ if __name__ == "__main__":
   base_n = 4 # 4 letras en el alfabeto de ADN
   
   # cargar los datos
-  fasta = pd.read_csv('../data/output/1.4 samples.tsv', sep='\t',
+  fasta = pd.read_csv('../outputs/1.4 samples.tsv', sep='\t',
                       converters={'nombre_seq': ast.literal_eval,
                                   'seq': ast.literal_eval,
                                   'longitud_seq': ast.literal_eval,})
   # exploder las listas en filas
   cols = ['nombre_seq', 'seq']
   df = pd.DataFrame(fasta[cols], columns=cols).explode(cols).reset_index(drop=True)
-
+#%%
   # crear una lista para almacenar los k-mers y sus frecuencias
   list_kmer = []
   for en, seq in df.iterrows():
