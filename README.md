@@ -148,7 +148,8 @@ El pipeline expone un **único proceso**:
        - Las fómulas de distancias se especifican con el parámetro `dis_formula` en `nextflow.config`
        - Extra información de `hsps.npy` para realizar los cálculos y la información de `labels.npy` para buscar alinemiento inverso, es decir, seq1-v-seq2, el inverso es seq2-v-seq1. 
        - genera:
-         - archivo distances_dN.npy, donde N corresponde al número de la fórmula de distancia utilizado.  
+         - archivo unique_labels.npy.  
+         - archivo distances_matrix.npy de forma (N,N,d), donde N corresponde al número de labels, y d esta dado por el número de fórmulas de distancias especificados.
 - **Outputs**:
     - `emit: 
        - `distance_npy` → `*.npy`
