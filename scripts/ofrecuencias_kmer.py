@@ -34,7 +34,7 @@ def seq2kmer(seq, long_kmer, base_n=4):
   return dict(Counter(code_kmer(seq['seq'], long_kmer=long_kmer, base_n=base_n)))
 
 #%%
-%%time
+#%%time
 if __name__ == "__main__":
   # para parsear
   long_kmer = 3  # Longitud de k-mers
@@ -66,5 +66,5 @@ if __name__ == "__main__":
   # matriz de frecuencias de k-mers
   df_kmer = pd.DataFrame(list_kmer, index=df['nombre_seq'][:len(list_kmer)]).fillna(0).astype(int)
   df_kmer.columns = [decode_kmer(ii, 3) for ii in df_kmer.columns]
-  df_kmer
+  df_kmer.to_csv('../outputs/1.5 frecuency.tsv', index=False, sep='\t')
 # %%
