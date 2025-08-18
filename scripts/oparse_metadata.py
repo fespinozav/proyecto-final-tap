@@ -1,8 +1,8 @@
 import argparse
 import os
-import numpy as np
 import pandas as pd
 import re
+import time
 from glob import glob
 
 # filtrado general
@@ -49,7 +49,7 @@ def secuencias(secuencias, guardar=True, output_dir='../outputs'):
     dict_data = {'idx': [], 'nombre_seq': [], 
                 'seq': [], 'cantidad_seq': [],
                 'longitud_seq': []}
-    print('Progreso:', end=' ')
+    print('Progreso:', end=' ', flush=True)
     for en,ii in enumerate(fasta['fichero']):
         nombres_seq, seq = lector_fasta(ii)
         ctdad = [len(seq) for seq in seq]
@@ -59,7 +59,7 @@ def secuencias(secuencias, guardar=True, output_dir='../outputs'):
         dict_data['cantidad_seq'].append(len(seq))
         dict_data['longitud_seq'].append(ctdad)
         if en%5 == 0:
-            print(en, end=' ')
+            print(en, end=' ', flush=True)
     print()
     fasta = pd.merge(fasta,pd.DataFrame(dict_data), left_on=fasta.index,right_on='idx').drop(columns=['idx'])
     if guardar:
@@ -95,6 +95,8 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
+    tiempo_inicio = time.time()
+
     # Cargar tabla
     if not os.path.exists(args.tabla):
         raise FileNotFoundError(f"El archivo {args.tabla} no existe.")
@@ -125,6 +127,9 @@ if __name__ == '__main__':
     print(f'Número de secuencias extraídas: {len(secuencias)}')
     print('-'*60)
     print('Proceso completado con éxito.')
+
+    tiempo_fin = time.time()
+    print(f"Tiempo total de ejecución: {tiempo_fin - tiempo_inicio:.2f} segundos")
     
 # ejemplo de uso:
 # python oparse_metadata.py --help
