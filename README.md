@@ -26,7 +26,7 @@ Incluye dos formas de uso:
 
 Instalación de ambiente conda con todas las dependencias:
 - Ingresar a la carpeta del repositorio
-- Asegurarse de que conda este instalado y corriendo
+- Asegurarse de que conda este instalado y corriendo (si se usa el sistema operativo Windows, asegurarse de tener instalado el subsitema WSL, e [instalar miniconda dentro de WSL](https://www.anaconda.com/docs/getting-started/miniconda/install#linux-terminal-installer))
 - Instalar y activar el ambiente conda ejecutando los siguientes comandos:
 ```bash
 conda env create -f environment.yaml
