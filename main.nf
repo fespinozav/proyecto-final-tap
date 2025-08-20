@@ -6,6 +6,8 @@ include { RUN_BLAST } from './modules/local/blast.nf'
 include { MAKE_DB } from './modules/local/blast.nf'
 include { EXTRACT_HSPS } from './modules/local/distances.nf'
 include { CALC_DISTANCES } from './modules/local/distances.nf'
+include { RUN_HEATMAPS } from './modules/local/distances.nf'
+include { RUN_CORRELACION } from './modules/local/distances.nf'
 
 
 // ---------------- Defaults para params (evita WARN) ----------------
@@ -46,5 +48,7 @@ workflow {
     blast_results=RUN_BLAST(file_channel,database)
     // blast_results = Channel.fromPath("${params.blast}/*.xml") //To run on the files, not on the output of channel
     npy_results=EXTRACT_HSPS(blast_results)
-    CALC_DISTANCES(npy_results.collect()).view()
+    distances_out=CALC_DISTANCES(npy_results.collect())
+    RUN_HEATMAPS(distances_out)
+    RUN_CORRELACION(distances_out)
 }
