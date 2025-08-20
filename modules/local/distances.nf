@@ -59,7 +59,6 @@ process RUN_CORRELACION {
 
     script:
     """
-    pip install scikit-bio
     python3 "${projectDir}/scripts/DistExtract/correlacion_Ds.py" "${distances_output[0]}" .
     """
 }
