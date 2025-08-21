@@ -189,4 +189,4 @@ if __name__ == "__main__":
         print(f"Tiempo total de ejecución: {tiempo_fin - tiempo_inicio:.2f} segundos")
 
     # ejemplo de uso
-    # python -i ofrecuencias_kmer.py --entrada "../genomes/Streptococcus suis/*.fna" --long_kmer 3 4 5 --salida "../outputs/1.5 frecuency.tsv" --max_cpu 4
+    # python -i ofrecuencias_kmer.py --entrada "../genomes/Streptococcus_suis/*.fna" --long_kmer 3 4 5 --salida "../outputs/1.5 frecuency.tsv" --max_cpu 4
