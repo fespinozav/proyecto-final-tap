@@ -11,7 +11,7 @@ Incluye dos formas de uso:
 
 ## Resultados
 
-Los resultados generados por la ejecución del pipeline se almacenan en la carpeta `results/`. Dentro de esta se incluyen los archivos que permiten realizar el análisis de distancias y correlaciones entre las secuencias procesadas. Asimismo, se generan visualizaciones como mapas de calor y matrices comparativas, acompañadas de conclusiones derivadas de los cálculos estadísticos y filogenéticos, lo que facilita la interpretación de la diversidad y similitud entre especies.
+Los resultados generados por la ejecución del pipeline se almacenan en la carpeta `figures/`. Dentro de esta se incluyen los resultados que permiten realizar el análisis de distancias y correlaciones entre las secuencias procesadas. Asimismo, se generan visualizaciones como mapas de calor y matrices comparativas, acompañadas de conclusiones derivadas de los cálculos estadísticos y filogenéticos en el archivo 'RESULTADOS Y CONCLUSIONES.md', lo que facilita la interpretación de la diversidad y similitud entre especies.
 
 ---
 
