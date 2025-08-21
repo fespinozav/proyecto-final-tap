@@ -19,7 +19,9 @@ Incluye dos formas de uso:
 <table>
   <tr>
     <td>
-      ![Logo de prueba 1](https://via.placeholder.com/100)
+      Mapa de calor para distancia d0
+      <img src="results/heatmap_d_0.png" alt="Mapa de calor para distancia d0" width="600">
+
     </td>
     <td>
       ![Logo de prueba 2](https://via.placeholder.com/100)
