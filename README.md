@@ -41,6 +41,14 @@ conda env create -f environment.yml
 conda activate TAP
 ```
 
+Si trabajas con MacOS
+
+```bash
+conda env create -f environment.yaml
+conda activate tap-mac
+```
+
+
 Instalación rápida de dependencias Python (opcional):
 
 ```bash
