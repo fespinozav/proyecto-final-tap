@@ -16,6 +16,20 @@ Incluye dos formas de uso:
 </p>
 <p align="center">
 
+<table>
+  <tr>
+    <td>
+      ![Logo de prueba 1](https://via.placeholder.com/100)
+    </td>
+    <td>
+      ![Logo de prueba 2](https://via.placeholder.com/100)
+    </td>
+    <td>
+      ![Logo de prueba 3](https://via.placeholder.com/100)
+    </td>
+  </tr>
+</table>
+
 ---
 
 ## Requisitos
