@@ -48,15 +48,6 @@ conda env create -f environment.yaml
 conda activate tap-mac
 ```
 
-
-Instalación rápida de dependencias Python (opcional):
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install pandas biopython
-```
-
 ---
 
 ## Estructura del proyecto (resumen)
