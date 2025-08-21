@@ -384,3 +384,7 @@ nextflow run . --species "Klebsiella aerogenes" --outdir outputs
   - Carpeta de archivos para nuevos procesos en scripts/DistExtract.
   - Modificación de archivo main.df para implementación de pipeline.
   - Parámetros agregados en archivo `nextflow.config` para nuevos procesos.
+
+- **(2025-08-21)**
+  - Se agrega archivo 'environment.yaml' con dependencias para MacOS.
+  - Se agrega carpeta 'figures' con gráficos de resultados
