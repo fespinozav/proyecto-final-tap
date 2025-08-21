@@ -227,7 +227,7 @@ Por defecto los deja en `outputs/` (o en la ruta que pases con `--outdir`).
   - (`../outputs/1.5 frecuency_k4.tsv`)
   - (`../outputs/1.5 frecuency_k5.tsv`)
 - **Ejecución**:
-	./scripts/ofrecuencias.kmer.sh
+	./scripts/ofrecuencias_kmer.sh
 
 ---
 
