@@ -215,6 +215,20 @@ Genera:
 
 Por defecto los deja en `outputs/` (o en la ruta que pases con `--outdir`).
 
+
+### `ofrecuencias_kmer`
+- **Input**:
+	- (`--entrada` "../genomes/*.fna")
+ 	- (`--long_kmer` 3 4 5)
+  	- (`--salida` "../outputs/1.5 frecuency.tsv")
+  	- (`--max_cpu` 4)
+- **Outputs**:
+  - (`../outputs/1.5 frecuency_k3.tsv`)
+  - (`../outputs/1.5 frecuency_k4.tsv`)
+  - (`../outputs/1.5 frecuency_k5.tsv`)
+- **Ejecución**:
+	./scripts/ofrecuencias.kmer.sh
+
 ---
 
 ### 2) Modo Nextflow (pipeline)
