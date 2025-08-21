@@ -7,7 +7,7 @@ Este proyecto corresponde al trabajo final para la asignatura **Técnicas de la 
 Incluye dos formas de uso:
 
 - **Modo scripts**: `scripts/download_by_species.sh` y `scripts/parse_metadata.py`.
-- **Modo pipeline** con **Nextflow (DSL2)**: proceso `PARSE_METADATA` que orquesta `parse_metadata.sh` → `parse_metadata.py` y publica **TSVs**.
+- **Modo pipeline** con **Nextflow (DSL2)**: implementa un flujo de trabajo integral basado en BLAST mediante procesos secuenciales: `PARSE_METADATA` → `MAKE_DB` → `RUN_BLAST` → `EXTRACT_HSPS` → `CALC_DISTANCES` → `RUN_HEATMAPS` → `RUN_CORRELACION`. Este enfoque genera matrices de distancia filogenéticas adecuadas para el análisis evolutivo y la clasificación taxonómica detallada por medio de mapas de calor que nos permite comparar la diferencia entre las secuencias comparadas, y también la diferencia entre las 10 fórmulas de distancia usadas.
 
 ---
 
