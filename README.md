@@ -20,7 +20,7 @@ Incluye dos formas de uso:
   <tr>
     <td>
       Mapa de calor para distancia d0
-      <img src="results/heatmap_d_0.png" alt="Mapa de calor para distancia d0" width="100">
+      <img src="results/heatmap_d_0.png" alt="Mapa de calor para distancia d0" width="250">
 
     </td>
     <td>
