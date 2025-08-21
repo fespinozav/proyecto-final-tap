@@ -1,4 +1,5 @@
 outputs
 work
+results
 .nextflow*
 .DS_Store
