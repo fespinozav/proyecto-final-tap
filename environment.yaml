@@ -1,0 +1,32 @@
+name: tap-mac
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  # Python version pinned for broad compatibility across macOS (Intel/ARM), Linux y Windows
+  - python=3.10
+  - pip
+
+  # Núcleo científico (evita paquetes específicos de SO como mkl/libgcc)
+  - numpy=1.26
+  - scipy=1.11
+  - pandas=2.1
+  - matplotlib
+  - seaborn
+  - statsmodels
+  - h5py
+
+  # Bio/DS
+  - scikit-bio
+  - biopython
+  - scikit-bio
+  - blast
+
+  # Utilidades
+  - requests
+  - jupyterlab
+
+  # Si necesitas paquetes que no estén en conda, añádelos aquí sin fijar builds
+  - pip:
+      # - paquete-ejemplo>=1.0
