@@ -17,19 +17,24 @@ Incluye dos formas de uso:
 - **Bash** (macOS / Linux)
 - **Conda 24.11.3**
 - **Python 3.8+** con:
+  - `numpy`
   - `pandas`
   - `biopython`
   - `blast`
+  - `matplotlib`
+  - `seaborn`
+  - `scikit-bio`
 - Acceso a la carpeta `genomes/` con subcarpetas por especie (p.ej. `Mycobacterium_intracellulare/`).
 
 > En macOS sin contenedor verás `WARN: Task runtime metrics are not reported…` (es esperado).
 
 Instalación de ambiente conda con todas las dependencias:
 - Ingresar a la carpeta del repositorio
+- Asegurarse de que conda este instalado y corriendo (si se usa el sistema operativo Windows, asegurarse de tener [instalado el subsitema WSL](https://learn.microsoft.com/es-mx/windows/wsl/install), e [instalar miniconda dentro de WSL](https://www.anaconda.com/docs/getting-started/miniconda/install#linux-terminal-installer))
 - Asegurarse de que conda este instalado y corriendo (si se usa el sistema operativo Windows, asegurarse de tener instalado el subsitema WSL, e [instalar miniconda dentro de WSL](https://www.anaconda.com/docs/getting-started/miniconda/install#linux-terminal-installer))
 - Instalar y activar el ambiente conda ejecutando los siguientes comandos:
 ```bash
-conda env create -f environment.yaml
+conda env create -f environment.yml
 conda activate TAP
 ```
 
@@ -48,11 +53,8 @@ pip install pandas biopython
 ```
 .
 ├── genomes/                       # Datos locales por especie
-├── modules/local/parse_metadata.nf# Proceso Nextflow PARSE_METADATA
+├── modules/local/                 # Proceso Nextflow
 ├── scripts/                       # Wrappers y utilidades
-│   ├── download_by_species.sh
-│   ├── parse_metadata.py
-│   └── parse_metadata.sh
 ├── nextflow.config                # Config del pipeline
 ├── outputs/                       # Publicación por defecto (ver params.outdir)
 ├── reports/                       # Reportes si activas -with-*
@@ -63,7 +65,7 @@ pip install pandas biopython
 
 ## Flujo con Nextflow
 
-El pipeline expone un **único proceso**:
+El pipeline expone los siguientes procesos:
 
 ### `PARSE_METADATA`
 - **Input**: canal de especies (`--species` única o `--species_list` archivo).
@@ -80,16 +82,6 @@ El pipeline expone un **único proceso**:
   - `emit: samples` → `samples_*.tsv`
   - `emit: labels`  → `labels_*.tsv`
   - **publishDir**: `params.outdir` (por defecto `${projectDir}/outputs` salvo que lo cambies en `nextflow.config`).
-
-**Parámetros clave**
-
-| Parámetro          | Tipo     | Requerido | Descripción                                               |
-|--------------------|----------|-----------|-----------------------------------------------------------|
-| `--species`        | string   | Sí*       | Nombre de especie. Ej.: `"Mycobacterium intracellulare"` |
-| `--species_list`   | archivo  | Sí*       | Archivo con una especie por línea                         |
-| `--outdir`         | carpeta  | No        | Carpeta donde publicar TSVs (`publishDir`)                |
-
-\* Usa **uno u otro** (`--species` **o** `--species_list`).
 
 ### `MAKE_DB`
 - **Input**:
@@ -155,7 +147,40 @@ El pipeline expone un **único proceso**:
        - `distance_npy` → `*.npy`
     - **publishDir**: `params.distances` (por defecto `${params.outdir}/distances/` salvo que lo cambies en `nextflow.config`).
 
+### `RUN_HEATMAPS`
+- **Input**:
+       - canal de archivos `*.npy` DESDE `CALC_DISTANCES`.
+- **Ejecución**:
+    1. `heatmaps.py` 
+       - Recibe la matriz de distancias y las etiquetas (`distances_matrix.npy` y `unique_labels.npy`)
+       - Genera un mapa de calor (heatmap) en formato .png para cada una de las fórmulas de distancia calculadas.        
+- **Outputs**:
+    - `emit` → `*.png` 
+    - **publishDir**: `params.heatmaps` (por defecto `${params.outdir}/heatmaps/`).
 
+### `RUN CORRELACION`
+- **Input**:
+      - canal de archivos `*.npy` desde `CALC_DISTANCES`.
+- **Ejecución**:
+    1. `correlacion_Ds.py`
+      - Recibe la matriz de distancias.
+      - Realiza un Test de Mantel para comparar estadísticamente todas las matrices de distancia entre sí.
+      - Genera un único mapa de calor de correlaciones que resume los resultados.
+- **Outputs**:
+    - `emit:` → `*.png`
+    - **publishDir**: `params.correlation`(por defecto `${params.outdir}/correlation/`).
+
+---
+
+**Parámetros clave**
+
+| Parámetro          | Tipo     | Requerido | Descripción                                               |
+|--------------------|----------|-----------|-----------------------------------------------------------|
+| `--species`        | string   | Sí*       | Nombre de especie. Ej.: `"Mycobacterium intracellulare"` |
+| `--species_list`   | archivo  | Sí*       | Archivo con una especie por línea                         |
+| `--outdir`         | carpeta  | No        | Carpeta donde publicar TSVs (`publishDir`)                |
+
+\* Usa **uno u otro** (`--species` **o** `--species_list`).
 
 ---
 
@@ -337,8 +362,14 @@ nextflow run . --species "Klebsiella aerogenes" --outdir outputs
 
 ---
 
-### Changelog (2025-08-09)
-- Integración **Nextflow (DSL2)** de los procesos `MAKE_DB`, `RUN_BLAST`,`EXTRACT_HSPS` y `CALC_DISTANCES`.
-- Carpeta de archivos para nuevos procesos en scripts/DistExtract.
-- Modificación de archivo main.df para implementación de pipeline.
-- Parámetros agregados en archivo `nextflow.config` para nuevos procesos.
+### Changelog
+- **(2025-08-20)**
+  - Integración de los procesos `RUN_HEATMAPS` y `RUN_CORRELACION`.
+  - Ajustes en los scripts de Python para aceptar argumentos desde la línea de comandos.
+  - Actualización de la gestión de dependencias de Python dentro del ambiente conda.
+
+- **(2025-08-09)**
+  - Integración **Nextflow (DSL2)** de los procesos `MAKE_DB`, `RUN_BLAST`,`EXTRACT_HSPS` y `CALC_DISTANCES`.
+  - Carpeta de archivos para nuevos procesos en scripts/DistExtract.
+  - Modificación de archivo main.df para implementación de pipeline.
+  - Parámetros agregados en archivo `nextflow.config` para nuevos procesos.
