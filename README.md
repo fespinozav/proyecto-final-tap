@@ -11,27 +11,7 @@ Incluye dos formas de uso:
 
 ## Resultados
 
-<p align="center">
-  <img src="results/heatmap_d_0.png" alt="Mapa de calor para distancia d0" width="600">
-</p>
-<p align="center">
-
-<table>
-  <tr>
-    <td>
-      Mapa de calor para distancia d0
-      <img src="results/heatmap_d_0.png" alt="Mapa de calor para distancia d0" width="250">
-
-    </td>
-    <td>
-      ![Logo de prueba 2](https://via.placeholder.com/100)
-    </td>
-    <td>
-      ![Logo de prueba 3](https://via.placeholder.com/100)
-    </td>
-  </tr>
-</table>
-
+Los resultados generados por la ejecución del pipeline se almacenan en la carpeta `results/`. Dentro de esta se incluyen los archivos que permiten realizar el análisis de distancias y correlaciones entre las secuencias procesadas. Asimismo, se generan visualizaciones como mapas de calor y matrices comparativas, acompañadas de conclusiones derivadas de los cálculos estadísticos y filogenéticos, lo que facilita la interpretación de la diversidad y similitud entre especies.
 ---
 
 ## Requisitos
