@@ -85,7 +85,7 @@ if __name__ == "__main__":
             help='Lista de longitudes de k-mer (ejemplo: 3 4 5)'
         )
         parser.add_argument(
-            '--salida', type=str, default='../outputs/1.5 frecuency.tsv',
+            '--salida', type=str, default='../outputs/1.5_frecuency.tsv',
             help='Ruta base del archivo TSV de salida (se agregará _kN.tsv para cada k)'
         )
         parser.add_argument(
@@ -142,7 +142,11 @@ if __name__ == "__main__":
         )
         parser.add_argument(
             '--entrada', type=str, required=True,
-            help='Ruta con comodín a los archivos fasta (ejemplo: "../genomes/*.fna")'
+            help='Ruta con los archivos fasta (ejemplo: "../genomes")'
+            )
+        parser.add_argument(
+            '--glob', type=str, required=True,
+            help='Comodín de los archivos fasta (ejemplo: "*.fna")'
             )
         parser.add_argument(
             '--long_kmer', type=int, nargs='+', required=True,
@@ -166,7 +170,9 @@ if __name__ == "__main__":
         base_to_int[ord('T')] = 3
         int_to_base = {0: 'A', 1: 'C', 2: 'G', 3: 'T'}
         entrada = args.entrada
-        path, comodin = os.path.split(entrada)
+        comodin = args.glob
+        path= entrada
+
         if not os.path.exists(path):
             raise FileNotFoundError(f"El directorio {path} no existe.")
         
