@@ -172,6 +172,14 @@ El pipeline expone los siguientes procesos:
     - `emit:` → `*.png`
     - **publishDir**: `params.correlation`(por defecto `${params.outdir}/correlation/`).
 
+### `KMER`
+- **Input**:
+      - canal de archivos `*.fna` de la carpeta `genomes`.
+      - Uso de CPU por defecto: 2
+      - Longitud kmers: param.kmer
+- **Outputs**:
+    - `emit:` → `*.tsv`
+    - **publishDir**: `params.kmer_results`(por defecto `${params.outdir}/kmer_results/`).
 ---
 
 **Parámetros clave**
@@ -215,19 +223,6 @@ Genera:
 
 Por defecto los deja en `outputs/` (o en la ruta que pases con `--outdir`).
 
-
-### `ofrecuencias_kmer`
-- **Input**:
-	- (`--entrada` "../genomes/*.fna")
- 	- (`--long_kmer` 3 4 5)
-  	- (`--salida` "../outputs/1.5 frecuency.tsv")
-  	- (`--max_cpu` 4)
-- **Outputs**:
-  - (`../outputs/1.5 frecuency_k3.tsv`)
-  - (`../outputs/1.5 frecuency_k4.tsv`)
-  - (`../outputs/1.5 frecuency_k5.tsv`)
-- **Ejecución**:
-	./scripts/ofrecuencias_kmer.sh
 
 ---
 
@@ -379,6 +374,10 @@ nextflow run . --species "Klebsiella aerogenes" --outdir outputs
 ---
 
 ### Changelog
+- **(2025-08-21)**
+  - Implementación de módulo de frecuencia de kmers en nextflow.
+  - Se agrega archivo 'environment.yaml' con dependencias para MacOS.
+  - Se agrega carpeta 'figures' con gráficos de resultados
 - **(2025-08-20)**
   - Integración de los procesos `RUN_HEATMAPS` y `RUN_CORRELACION`.
   - Ajustes en los scripts de Python para aceptar argumentos desde la línea de comandos.
@@ -390,6 +389,3 @@ nextflow run . --species "Klebsiella aerogenes" --outdir outputs
   - Modificación de archivo main.df para implementación de pipeline.
   - Parámetros agregados en archivo `nextflow.config` para nuevos procesos.
 
-- **(2025-08-21)**
-  - Se agrega archivo 'environment.yaml' con dependencias para MacOS.
-  - Se agrega carpeta 'figures' con gráficos de resultados
